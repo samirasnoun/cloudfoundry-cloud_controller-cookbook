@@ -17,5 +17,13 @@
 # limitations under the License.
 #
 
+m_nodes = search(:node, "role:cloudfoundry_nats_server")
+m_node = m_nodes.first
+
+node.set[:searched_data][:nats_user]= m_node.nats_server.user
+node.set[:searched_data][:nats_password]= m_node.nats_server.password
+node.set[:searched_data][:nats_host]= m_node.ipaddress
+node.set[:searched_data][:nats_port]= m_node.nats_server.port
+
 include_recipe "cloudfoundry-cloud_controller::database"
 include_recipe "cloudfoundry-cloud_controller::server"
