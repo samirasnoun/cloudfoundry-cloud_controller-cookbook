@@ -73,3 +73,11 @@ default['cloudfoundry_cloud_controller']['server']['services'] = [
 # Where to store the pid_file for the CloudController.
 default[:cloudfoundry_cloud_controller]['server']['pid_file'] = File.join(node[:cloudfoundry_common][:pid_dir], "cloud_controller.pid")
 
+
+#Samir 
+default[:searched_data][:nats_user]=''
+default[:searched_data][:nats_password]=''
+default[:searched_data][:nats_host]=''
+default[:searched_data][:nats_port]=''
+
+
