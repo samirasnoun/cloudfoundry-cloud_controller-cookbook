@@ -4,7 +4,7 @@ include_attribute "cloudfoundry-common"
 default['cloudfoundry_cloud_controller']['server']['domain'] = 'vcap.me'
 
 # The uri that services can use to reach the cloud controller.
-default['cloudfoundry_cloud_controller']['server']['api_uri'] = "http://api.#{node.cloudfoundry_cloud_controller.server.domain}"
+default['cloudfoundry_cloud_controller']['server']['api_uri'] = "http://api.#{node['cloudfoundry_cloud_controller']['server']['domain']}"
 
 # The welcome message that users will see when first connecting.
 default['cloudfoundry_cloud_controller']['server']['welcome'] = "VMWare's Cloud Application Platform"
@@ -33,10 +33,10 @@ default['cloudfoundry_cloud_controller']['server']['insecure_instance_port'] = 9
 default['cloudfoundry_cloud_controller']['server']['log_level'] = 'info'
 
 # TODO (trotter): Find out how this differes from `rails_log_file`.
-default['cloudfoundry_cloud_controller']['server']['log_file'] = "#{node[:cloudfoundry_common][:log_dir]}/cloud_controller.log"
+default['cloudfoundry_cloud_controller']['server']['log_file'] = "#{node['cloudfoundry_common']['log_dir']}/cloud_controller.log"
 
 # TODO (trotter): Find out how this differs from `log_file`.
-default['cloudfoundry_cloud_controller']['server']['rails_log_file'] = "#{node[:cloudfoundry_common][:log_dir]}/cloud_controller-rails.log"
+default['cloudfoundry_cloud_controller']['server']['rails_log_file'] = "#{node['cloudfoundry_common']['log_dir']}/cloud_controller-rails.log"
 
 # TODO (trotter): Find out what this means.
 default['cloudfoundry_cloud_controller']['server']['allow_debug'] = true
@@ -71,13 +71,12 @@ default['cloudfoundry_cloud_controller']['server']['services'] = [
 ]
 
 # Where to store the pid_file for the CloudController.
-default[:cloudfoundry_cloud_controller]['server']['pid_file'] = File.join(node[:cloudfoundry_common][:pid_dir], "cloud_controller.pid")
+default['cloudfoundry_cloud_controller']['server']['pid_file'] = File.join(node['cloudfoundry_common']['pid_dir'], "cloud_controller.pid")
 
 
 #Samir 
-default[:searched_data][:nats_user]=''
-default[:searched_data][:nats_password]=''
-default[:searched_data][:nats_host]=''
-default[:searched_data][:nats_port]=''
-
-
+default['searched_data']['nats_user']=''
+default['searched_data']['nats_password']=''
+default['searched_data']['nats_host']=''
+default['searched_data']['nats_port']=''
+default['searched_data']['runtimes']= Hash.new
