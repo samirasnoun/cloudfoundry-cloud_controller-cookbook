@@ -20,6 +20,10 @@
 if Chef::Config[:solo]
 	Chef::Log.warn("This recipe uses search. Chef Solo does not support search.")
 else 
+	
+	
+	node.set['cloudfoundry_cloud_controller']['database']['host'] = node.ipaddress
+
 	m_nodes_nats = search(:node, "role:cloudfoundry_nats_server")
 	m_node_nats = m_nodes_nats.first
 	if m_nodes_nats.count > 0 
@@ -28,6 +32,8 @@ else
 	    node.set['searched_data']['nats_host']= m_node_nats.ipaddress
   	    node.set['searched_data']['nats_port']= m_node_nats.nats_server.port
 	end
+
+
 	m_nodes_dea = search(:node, "role:cloudfoundry_dea*")
 	tmp = Hash.new
 
