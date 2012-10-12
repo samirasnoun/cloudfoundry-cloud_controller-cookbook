@@ -90,7 +90,7 @@ uaa:
   client_secret: cloudcontrollerclientsecret
 
 # admin support
-admins: [ <%= node[:cloudfoundry_cloud_controller][:server][:admins].join(", ") %> ]
+admins: [ <%= node[:cloudfoundry_cloud_controller][:server][:admins].join(", ")  %> ]
 https_required: false
 https_required_for_admins: false
 

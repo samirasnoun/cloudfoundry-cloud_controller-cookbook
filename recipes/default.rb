@@ -22,30 +22,36 @@ if Chef::Config[:solo]
 else 
 	
 	
-	node.set['cloudfoundry_cloud_controller']['database']['host'] = node.ipaddress
+	node.set['cloudfoundry_cloud_controller']['database']['host'] = node['ipaddress']
+        cf_id_node = node['cloudfoundry_cloud_controller']['cf_session']['cf_id']
+  	m_nodes_nats = search(:node, "role:cloudfoundry_nats_server AND cf_id:#{cf_id_node}")
+        
+       m_nodes_nats.each {|k| 
+        if (k['nats_server']['cf_session']['cf_id'] == node['cloudfoundry_cloud_controller']['cf_session']['cf_id']) then 
+	    node.set['searched_data']['nats_user']= k['nats_server']['user']
+  	    node.set['searched_data']['nats_password']= k['nats_server']['password']
+	    node.set['searched_data']['nats_host']= k['ipaddress']
+  	    node.set['searched_data']['nats_port']= k['nats_server']['port']
+        end
+       }
 
-	m_nodes_nats = search(:node, "role:cloudfoundry_nats_server")
-	m_node_nats = m_nodes_nats.first
-	if m_nodes_nats.count > 0 
-	    node.set['searched_data']['nats_user']= m_node_nats.nats_server.user
-  	    node.set['searched_data']['nats_password']= m_node_nats.nats_server.password
-	    node.set['searched_data']['nats_host']= m_node_nats.ipaddress
-  	    node.set['searched_data']['nats_port']= m_node_nats.nats_server.port
-	end
 
 
-	m_nodes_dea = search(:node, "role:cloudfoundry_dea*")
+
+
+	m_nodes_dea = search(:node, "role:cloudfoundry_dea_* AND cf_id:#{cf_id_node}")
 	tmp = Hash.new
 
 	m_nodes_dea.each do |m_node_dea|
-	tmp = tmp.merge(m_node_dea[:cloudfoundry_dea][:runtimes])
+	tmp = tmp.merge(m_node_dea['cloudfoundry_dea']['runtimes'])
 	end
 
 	Chef::Log.warn("runtimes.merge(tmp['runtimes']" + tmp.to_s)
 	node.set['searched_data']['runtimes']= tmp
+
 end 
 
-
+include_recipe "java"
 include_recipe "cloudfoundry-cloud_controller::install_blobstore_client"
 include_recipe "cloudfoundry-cloud_controller::install_pg"
 include_recipe "cloudfoundry-cloud_controller::database"

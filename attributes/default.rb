@@ -21,7 +21,7 @@ default['cloudfoundry_cloud_controller']['server']['allow_external_app_uris'] = 
 # The external port on which the CloudController is accessible. This
 # value normally won't matter, as a CloudFoundry router will front the
 # CloudController and serve it at `api.#{hostname}:80`.
-default['cloudfoundry_cloud_controller']['server']['external_port'] = 9022
+default['cloudfoundry_cloud_controller']['server']['external_port'] = 80
 
 # TODO (trotter): Find out what this means.
 default['cloudfoundry_cloud_controller']['server']['use_nginx'] = false
@@ -52,6 +52,7 @@ default['cloudfoundry_cloud_controller']['server']['staging_secure'] = false
 
 # An array containing the email addresses of all server admins.
 default['cloudfoundry_cloud_controller']['server']['admins'] = ['you@example.com']
+#default['cloudfoundry_cloud_controller']['server']['admins'][1] = ['you@example.com']
 
 # The name of the database that CloudController will use.
 default['cloudfoundry_cloud_controller']['database']['name'] = 'cloud_controller'
@@ -80,3 +81,7 @@ default['searched_data']['nats_password']=''
 default['searched_data']['nats_host']=''
 default['searched_data']['nats_port']=''
 default['searched_data']['runtimes']= Hash.new
+default['cloudfoundry_cloud_controller']['cf_session']['cf_id'] = '1'
+default['cloudfoundry_cloud_controller']['cf_session']['name'] = ''
+
+

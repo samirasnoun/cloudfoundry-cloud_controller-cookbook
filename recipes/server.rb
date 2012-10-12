@@ -22,14 +22,18 @@ cloudfoundry_component "cloud_controller" do
   pid_file node['cloudfoundry_cloud_controller']['server']['pid_file']
   log_file node['cloudfoundry_cloud_controller']['server']['log_file']
 end
+Chef::Log.warn("-------------------------------------------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+Chef::Log.warn("'ruby_path= ' + #{ruby_path}" )
+Chef::Log.warn("'config_file = ' + #{config_file} ")
+Chef::Log.warn("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<-------------------------------------------------------------")
 
 
 bash "run cloudfoundry migrations" do
   user node['cloudfoundry_common']['user']
   cwd  File.join(node['cloudfoundry_common']['vcap']['install_path'], "cloud_controller")
   code "PATH='#{ruby_path}:$PATH' #{File.join(ruby_path, "bundle")} exec rake db:migrate RAILS_ENV=production CLOUD_CONTROLLER_CONFIG='#{config_file}'"
-  subscribes :run, resources(:git => node['cloudfoundry_common']['vcap']['install_path'])
-  action :nothing
+#  subscribes :run, resources(:git => node['cloudfoundry_common']['vcap']['install_path'])
+  action :run
 end
 
 # Write config files for each framework so that cloud_controller can
