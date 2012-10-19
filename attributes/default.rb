@@ -21,7 +21,7 @@ default['cloudfoundry_cloud_controller']['server']['allow_external_app_uris'] = 
 # The external port on which the CloudController is accessible. This
 # value normally won't matter, as a CloudFoundry router will front the
 # CloudController and serve it at `api.#{hostname}:80`.
-default['cloudfoundry_cloud_controller']['server']['external_port'] = 80
+default['cloudfoundry_cloud_controller']['server']['external_port'] = 9022
 
 # TODO (trotter): Find out what this means.
 default['cloudfoundry_cloud_controller']['server']['use_nginx'] = false

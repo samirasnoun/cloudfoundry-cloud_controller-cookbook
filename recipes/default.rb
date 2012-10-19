@@ -25,7 +25,14 @@ else
 	node.set['cloudfoundry_cloud_controller']['database']['host'] = node['ipaddress']
         cf_id_node = node['cloudfoundry_cloud_controller']['cf_session']['cf_id']
   	m_nodes_nats = search(:node, "role:cloudfoundry_nats_server AND cf_id:#{cf_id_node}")
-        
+
+       while m_nodes_nats.count < 1 
+	Chef::Log.warn("Waiting for nats .... I am sleeping 7 sec")
+        sleep 7
+	m_nodes_nats = search(:node, "role:cloudfoundry_nats_server AND cf_id:#{cf_id_node}")	
+       end
+
+  
        m_nodes_nats.each {|k| 
         if (k['nats_server']['cf_session']['cf_id'] == node['cloudfoundry_cloud_controller']['cf_session']['cf_id']) then 
 	    node.set['searched_data']['nats_user']= k['nats_server']['user']
@@ -34,9 +41,6 @@ else
   	    node.set['searched_data']['nats_port']= k['nats_server']['port']
         end
        }
-
-
-
 
 
 	m_nodes_dea = search(:node, "role:cloudfoundry_dea_* AND cf_id:#{cf_id_node}")
@@ -48,6 +52,7 @@ else
 
 	Chef::Log.warn("runtimes.merge(tmp['runtimes']" + tmp.to_s)
 	node.set['searched_data']['runtimes']= tmp
+	
 
 end 
 
@@ -55,4 +60,6 @@ include_recipe "java"
 include_recipe "cloudfoundry-cloud_controller::install_blobstore_client"
 include_recipe "cloudfoundry-cloud_controller::install_pg"
 include_recipe "cloudfoundry-cloud_controller::database"
+#at this level, postrgres password is generated, lets save it on the chef server 
+node.save
 include_recipe "cloudfoundry-cloud_controller::server"
